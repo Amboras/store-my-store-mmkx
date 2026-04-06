@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { clearConsent } from '@/lib/cookie-consent'
 import { useBrand } from '@/hooks/use-brand'
+import { usePolicies } from '@/hooks/use-policies'
 
 const footerLinks = {
   shop: [
@@ -16,15 +17,30 @@ const footerLinks = {
     { label: 'Shipping & Returns', href: '/shipping' },
     { label: 'Contact Us', href: '/contact' },
   ],
-  company: [
-    { label: 'About', href: '/about' },
-    { label: 'Privacy Policy', href: '/privacy' },
-    { label: 'Terms of Service', href: '/terms' },
-  ],
 }
 
 export default function Footer() {
   const { brand } = useBrand()
+  const { policies } = usePolicies()
+
+  // Build company links dynamically based on available policies
+  const companyLinks = [
+    { label: 'About', href: '/about' },
+  ]
+
+  // Add policy links only if they're set in the admin
+  if (policies?.privacy_policy) {
+    companyLinks.push({ label: 'Privacy Policy', href: '/privacy' })
+  }
+  if (policies?.terms_of_service) {
+    companyLinks.push({ label: 'Terms of Service', href: '/terms' })
+  }
+  if (policies?.refund_policy) {
+    companyLinks.push({ label: 'Refund Policy', href: '/refund-policy' })
+  }
+  if (policies?.cookie_policy) {
+    companyLinks.push({ label: 'Cookie Policy', href: '/cookie-policy' })
+  }
 
   return (
     <footer className="border-t bg-muted/30">
@@ -85,7 +101,7 @@ export default function Footer() {
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-widest mb-4">Company</h3>
             <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
+              {companyLinks.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                     {link.label}

@@ -395,6 +395,20 @@ export default function CheckoutPage() {
             </div>
           </div>
         </div>
+
+        {/* Compliance Footer */}
+        <div className="mt-12 pt-8 border-t text-center">
+          <p className="text-xs text-muted-foreground">
+            By completing your order, you agree to our{' '}
+            <Link href="/terms" className="underline underline-offset-2 hover:text-foreground transition-colors">
+              Terms of Service
+            </Link>
+            {' '}and{' '}
+            <Link href="/privacy" className="underline underline-offset-2 hover:text-foreground transition-colors">
+              Privacy Policy
+            </Link>
+          </p>
+        </div>
       </div>
     </>
   )

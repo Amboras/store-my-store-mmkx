@@ -1,8 +1,15 @@
 'use client'
 
-import { Mail, MapPin, Clock } from 'lucide-react'
+import { usePolicies } from '@/hooks/use-policies'
+import { Mail, MapPin, Clock, Phone, Loader2 } from 'lucide-react'
 
 export default function ContactPage() {
+  const { policies, isLoading } = usePolicies()
+
+  const contactEmail = policies?.contact_email || 'hello@yourstore.com'
+  const contactPhone = policies?.contact_phone || null
+  const contactAddress = policies?.contact_address || '123 Commerce Street\nNew York, NY 10001'
+
   return (
     <>
       <div className="border-b">
@@ -39,28 +46,49 @@ export default function ContactPage() {
 
           {/* Contact Info */}
           <div className="space-y-8 lg:pt-12">
-            <div className="flex gap-4">
-              <Mail className="h-5 w-5 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
-              <div>
-                <p className="font-medium text-sm">Email</p>
-                <p className="text-sm text-muted-foreground mt-1">hello@yourstore.com</p>
-                <p className="text-xs text-muted-foreground mt-0.5">We respond within 24 hours</p>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
               </div>
-            </div>
-            <div className="flex gap-4">
-              <MapPin className="h-5 w-5 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
-              <div>
-                <p className="font-medium text-sm">Address</p>
-                <p className="text-sm text-muted-foreground mt-1">123 Commerce Street<br />New York, NY 10001</p>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <Clock className="h-5 w-5 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
-              <div>
-                <p className="font-medium text-sm">Hours</p>
-                <p className="text-sm text-muted-foreground mt-1">Mon — Fri: 9am to 6pm EST<br />Sat — Sun: 10am to 4pm EST</p>
-              </div>
-            </div>
+            ) : (
+              <>
+                <div className="flex gap-4">
+                  <Mail className="h-5 w-5 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
+                  <div>
+                    <p className="font-medium text-sm">Email</p>
+                    <p className="text-sm text-muted-foreground mt-1">{contactEmail}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">We respond within 24 hours</p>
+                  </div>
+                </div>
+
+                {contactPhone && (
+                  <div className="flex gap-4">
+                    <Phone className="h-5 w-5 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
+                    <div>
+                      <p className="font-medium text-sm">Phone</p>
+                      <p className="text-sm text-muted-foreground mt-1">{contactPhone}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">Mon — Fri: 9am to 6pm EST</p>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex gap-4">
+                  <MapPin className="h-5 w-5 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
+                  <div>
+                    <p className="font-medium text-sm">Address</p>
+                    <p className="text-sm text-muted-foreground mt-1 whitespace-pre-line">{contactAddress}</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <Clock className="h-5 w-5 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
+                  <div>
+                    <p className="font-medium text-sm">Hours</p>
+                    <p className="text-sm text-muted-foreground mt-1">Mon — Fri: 9am to 6pm EST<br />Sat — Sun: 10am to 4pm EST</p>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
