@@ -25,14 +25,10 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Focus close button when mobile menu opens
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      mobileMenuCloseRef.current?.focus()
-    }
+    if (isMobileMenuOpen) mobileMenuCloseRef.current?.focus()
   }, [isMobileMenuOpen])
 
-  // Close mobile menu on Escape
   useEffect(() => {
     if (!isMobileMenuOpen) return
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -42,7 +38,6 @@ export default function Header() {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [isMobileMenuOpen])
 
-  // Focus trap for mobile menu
   const handleMobileMenuKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key !== 'Tab' || !mobileMenuRef.current) return
     const focusable = mobileMenuRef.current.querySelectorAll<HTMLElement>(
@@ -81,27 +76,30 @@ export default function Header() {
             </button>
 
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <span className="font-heading text-2xl font-semibold tracking-tight">
-                Store
+            <Link href="/" className="flex items-center gap-2.5">
+              <span className="font-heading text-2xl font-semibold tracking-tight" style={{ letterSpacing: '0.04em' }}>
+                Ryokan
               </span>
             </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-8">
-              <Link href="/products" className="text-sm tracking-wide uppercase link-underline py-1" prefetch={true}>
+              <Link href="/products" className="text-xs tracking-[0.15em] uppercase link-underline py-1 font-medium" prefetch={true}>
                 Shop All
               </Link>
-              {collections?.slice(0, 4).map((collection: any) => (
+              {collections?.slice(0, 4).map((collection: { id: string; handle: string; title: string }) => (
                 <Link
                   key={collection.id}
                   href={`/collections/${collection.handle}`}
-                  className="text-sm tracking-wide uppercase link-underline py-1"
+                  className="text-xs tracking-[0.15em] uppercase link-underline py-1 font-medium"
                   prefetch={true}
                 >
                   {collection.title}
                 </Link>
               ))}
+              <Link href="/about" className="text-xs tracking-[0.15em] uppercase link-underline py-1 font-medium" prefetch={true}>
+                Our Story
+              </Link>
             </nav>
 
             {/* Actions */}
@@ -111,21 +109,24 @@ export default function Header() {
                 className="p-2.5 hover:opacity-70 transition-opacity"
                 aria-label="Search"
               >
-                <Search className="h-5 w-5" />
+                <Search className="h-4.5 w-4.5" style={{ width: '18px', height: '18px' }} />
               </Link>
               <Link
                 href={isLoggedIn ? '/account' : '/auth/login'}
                 className="p-2.5 hover:opacity-70 transition-opacity hidden sm:block"
                 aria-label={isLoggedIn ? 'Account' : 'Sign in'}
               >
-                {isLoggedIn ? <User className="h-5 w-5" /> : <LogIn className="h-5 w-5" />}
+                {isLoggedIn
+                  ? <User style={{ width: '18px', height: '18px' }} />
+                  : <LogIn style={{ width: '18px', height: '18px' }} />
+                }
               </Link>
               <button
                 onClick={() => setIsCartOpen(true)}
                 className="relative p-2.5 hover:opacity-70 transition-opacity"
                 aria-label="Shopping bag"
               >
-                <ShoppingBag className="h-5 w-5" />
+                <ShoppingBag style={{ width: '18px', height: '18px' }} />
                 {itemCount > 0 && (
                   <span className="absolute top-0.5 right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-foreground text-[10px] font-bold text-background">
                     {itemCount}
@@ -141,7 +142,7 @@ export default function Header() {
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
-            className="absolute inset-0 bg-black/40"
+            className="absolute inset-0 bg-black/50"
             onClick={() => setIsMobileMenuOpen(false)}
           />
           <div
@@ -152,8 +153,8 @@ export default function Header() {
             onKeyDown={handleMobileMenuKeyDown}
             className="absolute inset-y-0 left-0 w-80 max-w-[85vw] bg-background animate-slide-in-right"
           >
-            <div className="flex items-center justify-between p-4 border-b">
-              <span className="font-heading text-xl font-semibold">Menu</span>
+            <div className="flex items-center justify-between p-5 border-b">
+              <span className="font-heading text-xl font-semibold" style={{ letterSpacing: '0.04em' }}>Ryokan</span>
               <button
                 ref={mobileMenuCloseRef}
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -163,38 +164,45 @@ export default function Header() {
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <nav className="p-4 space-y-1">
+            <nav className="p-5 space-y-1">
               <Link
                 href="/products"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block py-3 text-lg tracking-wide border-b border-border/50"
+                className="block py-3.5 text-sm tracking-[0.12em] uppercase border-b border-border/40"
                 prefetch={true}
               >
                 Shop All
               </Link>
-              {collections?.map((collection: any) => (
+              {collections?.map((collection: { id: string; handle: string; title: string }) => (
                 <Link
                   key={collection.id}
                   href={`/collections/${collection.handle}`}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block py-3 text-lg tracking-wide border-b border-border/50"
+                  className="block py-3.5 text-sm tracking-[0.12em] uppercase border-b border-border/40"
                   prefetch={true}
                 >
                   {collection.title}
                 </Link>
               ))}
-              <div className="pt-4 space-y-1">
+              <Link
+                href="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block py-3.5 text-sm tracking-[0.12em] uppercase border-b border-border/40"
+              >
+                Our Story
+              </Link>
+              <div className="pt-5 space-y-2">
                 <Link
                   href={isLoggedIn ? '/account' : '/auth/login'}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block py-3 text-muted-foreground"
+                  className="block py-2.5 text-sm text-muted-foreground"
                 >
                   {isLoggedIn ? 'Account' : 'Sign In'}
                 </Link>
                 <Link
                   href="/search"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block py-3 text-muted-foreground"
+                  className="block py-2.5 text-sm text-muted-foreground"
                 >
                   Search
                 </Link>

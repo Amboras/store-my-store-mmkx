@@ -4,35 +4,32 @@
 
 @layer base {
   :root {
-    --background: 40 20% 98%;
-    --foreground: 0 0% 10%;
-    --muted: 40 10% 94%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 35 40% 50%;
+    /* Zen-inspired palette: deep ink, warm ivory, brushed gold */
+    --background: 40 18% 97%;
+    --foreground: 25 15% 10%;
+    --muted: 38 12% 93%;
+    --muted-foreground: 25 8% 48%;
+    --accent: 32 55% 42%;
     --accent-foreground: 0 0% 100%;
-    --border: 40 10% 88%;
-    --ring: 35 40% 50%;
-    --primary: 0 0% 10%;
-    --primary-foreground: 0 0% 98%;
+    --border: 38 12% 86%;
+    --ring: 32 55% 42%;
+    --primary: 25 15% 10%;
+    --primary-foreground: 40 18% 97%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
-
-    /* Brand colors (dynamically injected from Store.metadata.brand) */
-    /* Access in CSS: var(--brand-primary), var(--brand-secondary) */
-    /* Managed by BrandStyleInjector component */
   }
 
   .dark {
-    --background: 0 0% 6%;
-    --foreground: 40 20% 94%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 55%;
-    --accent: 35 45% 55%;
+    --background: 25 12% 7%;
+    --foreground: 40 18% 92%;
+    --muted: 25 10% 13%;
+    --muted-foreground: 38 8% 55%;
+    --accent: 32 50% 50%;
     --accent-foreground: 0 0% 100%;
-    --border: 0 0% 16%;
-    --ring: 35 45% 55%;
-    --primary: 40 20% 94%;
-    --primary-foreground: 0 0% 6%;
+    --border: 25 10% 18%;
+    --ring: 32 50% 50%;
+    --primary: 40 18% 92%;
+    --primary-foreground: 25 12% 7%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
   }
@@ -72,13 +69,13 @@
     @apply w-full;
   }
 
-  /* Brand color utilities - uses colors from Store.metadata.brand */
+  /* Brand color utilities */
   .btn-brand-primary {
     background-color: var(--brand-primary, hsl(var(--primary)));
     color: white;
   }
   .btn-brand-primary:hover {
-    opacity: 0.9;
+    opacity: 0.88;
   }
 
   .text-brand-primary {
@@ -100,6 +97,12 @@
   .bg-brand-secondary {
     background-color: var(--brand-secondary, hsl(var(--accent)));
   }
+
+  /* Ink brush divider */
+  .divider-brush {
+    height: 1px;
+    background: linear-gradient(to right, transparent, hsl(var(--border)) 20%, hsl(var(--border)) 80%, transparent);
+  }
 }
 
 /* Smooth scrolling */
@@ -109,7 +112,8 @@ html {
 
 /* Selection color */
 ::selection {
-  @apply bg-accent/20 text-foreground;
+  background: hsl(32 55% 42% / 0.18);
+  color: hsl(var(--foreground));
 }
 
 /* Focus styles */
@@ -117,18 +121,60 @@ html {
   @apply outline-2 outline-offset-2 outline-ring;
 }
 
-/* Cookie consent animation */
+/* Animations */
 @keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(1rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in-left {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes slide-out-right {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 .animate-fade-in {
-  animation: fade-in 0.3s ease-out;
+  animation: fade-in 0.55s ease-out both;
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.65s ease-out both;
+}
+.animate-fade-in-left {
+  animation: fade-in-left 0.55s ease-out both;
+}
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out;
+}
+.animate-slide-out-right {
+  animation: slide-out-right 0.3s ease-out;
+}
+.animate-pulse-dot {
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+
+/* Cookie consent animation */
+@keyframes cookie-in {
+  from { opacity: 0; transform: translateY(1rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: cookie-in 0.3s ease-out;
 }
